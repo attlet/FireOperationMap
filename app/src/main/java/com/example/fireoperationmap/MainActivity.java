@@ -1,12 +1,18 @@
 package com.example.fireoperationmap;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.graphics.Matrix;
+import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.github.chrisbanes.photoview.OnMatrixChangedListener;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private String searchState = "st_name";
+    private PhotoView photoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
         createSearchView();
+        createMapView();
         initializeAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-        createMapView();
     }
 
     private void createSearchView() {
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CustomAdapter(options);
 
         adapter.setOnItemClickListener(new CustomAdapter.OnPersonItemClickLister() {
+            @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onItemClick(View view, int position) {
                 User user = adapter.getItem(position);
@@ -126,8 +135,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createMapView(){
-        PhotoView photoView = findViewById(R.id.photo_view);
+        photoView = findViewById(R.id.photo_view);
         photoView.setImageResource(R.drawable.naver_map2);
+
+        photoView.setMaximumScale(3.0f);
+
+        //테스트 용 좌표 찍기
+        photoView.setOnMatrixChangeListener(new OnMatrixChangedListener() {
+            @Override
+            public void onMatrixChanged(RectF rect) {
+                Log.d("rect", "left: " + rect.left + ", top: " + rect.top);
+            }
+        });
     }
 
     @Override
