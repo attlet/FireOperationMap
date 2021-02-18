@@ -15,7 +15,7 @@
         app:umanoFadeColor="@android:color/transparent"
         app:umanoPanelHeight="50dp"
         app:umanoScrollableView="@id/recyclerView"
-        app:umanoShadowHeight="4dp">
+        app:umanoShadowHeight="0dp">
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/photo_view"

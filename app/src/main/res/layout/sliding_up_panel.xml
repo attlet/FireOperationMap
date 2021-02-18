@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="0.5"
-    android:background="#FFFFFF"
+    android:background="@drawable/round_border"
     android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="48dp">
 
         <TextView
             android:id="@+id/icon_text"
@@ -36,6 +36,11 @@
             android:drawableLeft="@drawable/blue_square"
             android:text="소화전함" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#B1BCBE" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
