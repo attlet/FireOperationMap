@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String searchText = searchField.getText().toString();
+                if (searchText.equals("")) return;
                 InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 processSearch(searchText);
