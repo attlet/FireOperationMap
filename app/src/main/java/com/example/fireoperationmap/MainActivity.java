@@ -40,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private String searchState = "st_name";
     private PhotoView photoView;
-
+    private float middleX = 540f, middleY = 800f;
+    private float Width, Height;
+    private float[] matrix;
+    private float dx, dy;
+    private Matrix m = new Matrix();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 if (checkedId == R.id.rb_stname) {
                     Toast.makeText(MainActivity.this, "상호명으로 검색", Toast.LENGTH_SHORT).show();
                     searchState = "st_name";
-                }
-                else if (checkedId == R.id.rb_address) {
+                } else if (checkedId == R.id.rb_address) {
                     Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
                     searchState = "address";
                 }
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String searchText = searchField.getText().toString();
                 if (searchText.equals("")) return;
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 processSearch(searchText);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -98,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String searchText = searchField.getText().toString();
-                    InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                    InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     processSearch(searchText);
                     slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -120,6 +123,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasfocus) {
+        super.onWindowFocusChanged(hasfocus);
+        Width = photoView.getWidth();
+        Height = photoView.getHeight();
+
+    }
+
+
     private void initializeAdapter() {
         FirebaseRecyclerOptions<User> options = new FirebaseRecyclerOptions.Builder<User>().setQuery(database.getReference().child("User"), User.class).build();
         adapter = new CustomAdapter(options);
@@ -130,11 +142,26 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(View view, int position) {
                 User user = adapter.getItem(position);
                 Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
+                matrix = new float[9];
+                dx = middleX - (photoView.getLeft() + (Width * 0.9f));
+                dy = middleY - (photoView.getTop() + (Height * 0.1f));
+                photoView.getImageMatrix().getValues(matrix);
+//                photoView.setX(photoView.getLeft() + (Width * 0.2f));
+//                photoView.setY(photoView.getTop() + (Height * 0.1f));
+                Log.d("image matrix", "is " + matrix[2]);
+                Log.d("dx", "is " + dx);
+                Log.d("dy", "is " + dy);
+                Log.d("matrix", "is " + photoView.getImageMatrix());
+                matrix[2] = matrix[2] + dx;
+                matrix[5] = matrix[5] + dy;
+                Log.d("image matrix", "is " + matrix[2]);
+                m.setValues(matrix);
+                photoView.setImageMatrix(m);
             }
         });
     }
 
-    private void createMapView(){
+    private void createMapView() {
         photoView = findViewById(R.id.photo_view);
         photoView.setImageResource(R.drawable.naver_map2);
 
@@ -145,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMatrixChanged(RectF rect) {
                 Log.d("rect", "left: " + rect.left + ", top: " + rect.top);
+
             }
         });
     }
