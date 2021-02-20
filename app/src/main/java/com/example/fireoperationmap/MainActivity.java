@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -44,9 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
-        createSearchView();
         createMapView();
         initializeAdapterAndRecyclerView();
+        createSearchView();
     }
 
     private void initializeAdapterAndRecyclerView() {
@@ -78,6 +79,26 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener((view, position) -> {
             User user = adapter.getItem(position);
             Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
+
+            float[] matrix = new float[9];
+            Matrix m = new Matrix();
+            float dx, dy;
+            float middleX = 540f, middleY = 800f;
+
+            photoView.getImageMatrix().getValues(matrix);
+            matrix[0] = 1.0f;
+            matrix[4] = 1.0f;
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - matrix[2]) * 0.2f);
+            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - matrix[5]) * 0.1f);
+
+            Log.d("dx", "is " + dx);
+            Log.d("dy", "is " + dy);
+
+            matrix[2] = matrix[2] + dx;
+            matrix[5] = matrix[5] + dy;
+            Log.d("image left matrix", "is " + matrix[2]);
+            m.setValues(matrix);
+            photoView.setImageMatrix(m);
         });
     }
 
