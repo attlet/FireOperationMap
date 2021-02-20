@@ -92,9 +92,12 @@ public class MainActivity extends AppCompatActivity {
             User user = adapter.getItem(position);
             Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
             matrix = new float[9];
-            dx = middleX - (photoView.getLeft() + (Width * 0.2f));
-            dy = middleY - (photoView.getTop() + (Height * 0.1f));
             photoView.getImageMatrix().getValues(matrix);
+            matrix[0] = 1.0f;
+            matrix[4] = 1.0f;
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - matrix[2]) * 0.2f);
+            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - matrix[5]) * 0.1f);
+
             Log.d("Width", "is " + Width);
             Log.d("dx", "is " + dx);
             Log.d("dy", "is " + dy);
@@ -167,6 +170,6 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMaximumScale(3.0f);
 
         //테스트 용 좌표 찍기
-        photoView.setOnMatrixChangeListener(rect -> Log.d("rect", "left: " + rect.left + ", top: " + rect.top));
+        photoView.setOnMatrixChangeListener(rect -> Log.d("rect", "left: " + rect.left + ", top: " + rect.top + "right: " + rect.right));
     }
 }
