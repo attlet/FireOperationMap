@@ -19,11 +19,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
     private CustomAdapter.OnPersonItemClickLister listener;
     private String searchState = "st_name";
 
-    public interface OnPersonItemClickLister{
+    public interface OnPersonItemClickLister {
         void onItemClick(View view, int position);
     }
 
-    public void setOnItemClickListener(CustomAdapter.OnPersonItemClickLister listener){
+    public void setOnItemClickListener(CustomAdapter.OnPersonItemClickLister listener) {
         this.listener = listener;
     }
 
@@ -37,10 +37,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             else{
                 String pattern = constraint.toString().toLowerCase().trim();
                 for(User item : userListFull){
-                    if (searchState.equals("st_name") && item.getSt_name().toLowerCase().contains(pattern)){
+                    if (searchState.equals("st_name") && item.getSt_name().toLowerCase().contains(pattern)) {
                         filteredList.add(item);
                     }
-                    else if (searchState.equals("address") && item.getAddress().toLowerCase().contains(pattern)){
+                    else if (searchState.equals("address") && item.getAddress().toLowerCase().contains(pattern)) {
                         filteredList.add(item);
                     }
                 }

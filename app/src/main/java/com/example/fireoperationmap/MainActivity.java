@@ -32,11 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
-    private float middleX = 540f, middleY = 800f;
-    private float Width, Height;
-    private float[] matrix;
-    private float dx, dy;
-    private Matrix m = new Matrix();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         slidingUpPanelLayout = findViewById(R.id.sliding_layout);
 
-        createSearchView();
         createMapView();
         initializeAdapterAndRecyclerView();
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        Width = photoView.getWidth();
-        Height = photoView.getHeight();              //포토뷰 기준으로 할 지 이미지 행렬을 가져올지 계산
+        createSearchView();
     }
 
     private void initializeAdapterAndRecyclerView() {
@@ -91,14 +79,18 @@ public class MainActivity extends AppCompatActivity {
         adapter.setOnItemClickListener((view, position) -> {
             User user = adapter.getItem(position);
             Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
-            matrix = new float[9];
+
+            float[] matrix = new float[9];
+            Matrix m = new Matrix();
+            float dx, dy;
+            float middleX = 540f, middleY = 800f;
+
             photoView.getImageMatrix().getValues(matrix);
             matrix[0] = 1.0f;
             matrix[4] = 1.0f;
             dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - matrix[2]) * 0.2f);
             dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - matrix[5]) * 0.1f);
 
-            Log.d("Width", "is " + Width);
             Log.d("dx", "is " + dx);
             Log.d("dy", "is " + dy);
 
@@ -157,8 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
-
             }
         });
     }
@@ -170,6 +160,6 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMaximumScale(3.0f);
 
         //테스트 용 좌표 찍기
-        photoView.setOnMatrixChangeListener(rect -> Log.d("rect", "left: " + rect.left + ", top: " + rect.top + "right: " + rect.right));
+        photoView.setOnMatrixChangeListener(rect -> Log.d("rect", "left: " + rect.left + ", top: " + rect.top));
     }
 }
