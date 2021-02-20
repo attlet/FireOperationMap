@@ -55,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
         initializeAdapterAndRecyclerView();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Width = photoView.getWidth();
+        Height = photoView.getHeight();              //포토뷰 기준으로 할 지 이미지 행렬을 가져올지 계산
+    }
+
     private void initializeAdapterAndRecyclerView() {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("User");
         adapter = new CustomAdapter();
@@ -85,18 +92,16 @@ public class MainActivity extends AppCompatActivity {
             User user = adapter.getItem(position);
             Toast.makeText(getApplicationContext(), user.getId() + "가 선택됨", Toast.LENGTH_SHORT).show();
             matrix = new float[9];
-            dx = middleX - (photoView.getLeft() + (Width * 0.9f));
+            dx = middleX - (photoView.getLeft() + (Width * 0.2f));
             dy = middleY - (photoView.getTop() + (Height * 0.1f));
             photoView.getImageMatrix().getValues(matrix);
-//                photoView.setX(photoView.getLeft() + (Width * 0.2f));
-//                photoView.setY(photoView.getTop() + (Height * 0.1f));
-            Log.d("image matrix", "is " + matrix[2]);
+            Log.d("Width", "is " + Width);
             Log.d("dx", "is " + dx);
             Log.d("dy", "is " + dy);
-            Log.d("matrix", "is " + photoView.getImageMatrix());
+
             matrix[2] = matrix[2] + dx;
             matrix[5] = matrix[5] + dy;
-            Log.d("image matrix", "is " + matrix[2]);
+            Log.d("image left matrix", "is " + matrix[2]);
             m.setValues(matrix);
             photoView.setImageMatrix(m);
         });
