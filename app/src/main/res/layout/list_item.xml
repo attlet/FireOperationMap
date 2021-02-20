@@ -20,24 +20,28 @@
                 android:id="@+id/st_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
             <TextView
                 android:id="@+id/id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-black">
 
             <TextView
                 android:id="@+id/address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
         </TableRow>
 
         <TableRow
@@ -48,13 +52,15 @@
                 android:id="@+id/floor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
             <TextView
                 android:id="@+id/st_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
         </TableRow>
 
         <TableRow
@@ -65,13 +71,15 @@
                 android:id="@+id/structure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
             <TextView
                 android:id="@+id/facility"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
         </TableRow>
 
@@ -83,19 +91,22 @@
                 android:id="@+id/person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
             <TextView
                 android:id="@+id/phone1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
 
             <TextView
                 android:id="@+id/phone2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:fontFamily="sans-serif-black"/>
         </TableRow>
     </TableLayout>
 
