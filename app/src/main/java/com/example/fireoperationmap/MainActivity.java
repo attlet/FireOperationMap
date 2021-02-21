@@ -83,22 +83,35 @@ public class MainActivity extends AppCompatActivity {
             float[] matrix = new float[9];
             Matrix m = new Matrix();
             float dx, dy;
-            float middleX = 540f, middleY = 800f;
+            float middleX = 540f;
+            float middleY = 600f;
 
             photoView.getImageMatrix().getValues(matrix);
-            matrix[0] = 1.0f;
-            matrix[4] = 1.0f;
-            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - matrix[2]) * 0.2f);
-            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - matrix[5]) * 0.1f);
+            photoView.setScale(photoView.getMaximumScale());
+            matrix[0] = 1.2671099f;
+            matrix[2] = -1080f;
+            matrix[4] = 1.2671099f;
+            matrix[5] = -388.37793f;
+
+            Log.d("pre middle " , "middle x: " + middleX + ", middle y: " + middleY);
+            Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
+            Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right- photoView.getDisplayRect().left) * 0.75f);
+            dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
 
             Log.d("dx", "is " + dx);
             Log.d("dy", "is " + dy);
 
             matrix[2] = matrix[2] + dx;
             matrix[5] = matrix[5] + dy;
-            Log.d("image left matrix", "is " + matrix[2]);
+            Log.d("post matrix", "matrix[2]: " + matrix[2] + ", matrix[5]: " + matrix[5]);
             m.setValues(matrix);
             photoView.setImageMatrix(m);
+
+            Log.d("m values", "m : " + m);
+            photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", "left: " + photoView.getDisplayRect().left + " ,top" + photoView.getDisplayRect().top));
+
+
         });
     }
 
@@ -160,6 +173,6 @@ public class MainActivity extends AppCompatActivity {
         photoView.setMaximumScale(3.0f);
 
         //테스트 용 좌표 찍기
-        photoView.setOnMatrixChangeListener(rect -> Log.d("rect", "left: " + rect.left + ", top: " + rect.top));
+//        photoView.setOnMatrixChangeListener(rect -> Log.d("matrix", "left: " + rect.left + ", top: " + rect.top ));
     }
 }
