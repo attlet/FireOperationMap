@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        icon = (ImageView)findViewById(R.id.icon);
+        icon = (ImageView) findViewById(R.id.icon);
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot data : dataSnapshot.getChildren()) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
                     User user = data.getValue(User.class);
                     adapter.addUser(user);
                 }
@@ -94,15 +94,15 @@ public class MainActivity extends AppCompatActivity {
             Display display = getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
-            float middleX = (size.x)*0.5f;
-            float middleY = (size.y)*0.3f;
-            icon = (ImageView)findViewById(R.id.icon);
+            float middleX = (size.x) * 0.5f;
+            float middleY = (size.y) * 0.3f;
+            icon = (ImageView) findViewById(R.id.icon);
             photoView.setScale(3.0f);
             photoView.getImageMatrix().getValues(matrix);
 
             Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
-            Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
-            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right- photoView.getDisplayRect().left) * 0.75f);
+            Log.d("pre matrix", "matrix[2]: " + matrix[2] + ", matrix[5]" + matrix[5]);
+            dx = middleX - (matrix[2] + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
             dy = middleY - (matrix[5] + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
 
             Log.d("dx", "is " + dx);
@@ -118,7 +118,14 @@ public class MainActivity extends AppCompatActivity {
             icon.setX(middleX);
             icon.setY(middleY);
             Log.d("m values", "m : " + m);
-//            photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", " m: "));
+            photoView.setOnMatrixChangeListener(rect -> {
+//                if(icon.getVisibility() == View.VISIBLE){
+//                icon.setVisibility(View.INVISIBLE);  //다시 아이콘이 안보이도록
+//            }
+                Log.d("icon pos" , "icon x: "+rect.left + ", icon y:" + icon.getY());
+                icon.setX(rect.left + (photoView.getDisplayRect().right - photoView.getDisplayRect().left) * 0.75f);
+                icon.setY(rect.top + (photoView.getDisplayRect().bottom - photoView.getDisplayRect().top) * 0.3f);
+            });
 
         });
     }
@@ -133,15 +140,14 @@ public class MainActivity extends AppCompatActivity {
             if (checkedId == R.id.rb_stname) {
                 Toast.makeText(MainActivity.this, "상호명으로 검색", Toast.LENGTH_SHORT).show();
                 adapter.setSearchState("st_name");
-            }
-            else if (checkedId == R.id.rb_address) {
+            } else if (checkedId == R.id.rb_address) {
                 Toast.makeText(MainActivity.this, "주소지로 검색", Toast.LENGTH_SHORT).show();
                 adapter.setSearchState("address");
             }
         });
 
         searchButton.setOnClickListener(view -> {
-            InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+            InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             //여기 수정 해야함 manger가 불러와졌을때만 적용할 수 있도록
             //manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             //slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         searchField.setOnEditorActionListener((view, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                InputMethodManager manager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                 manager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 return true;
@@ -174,18 +180,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createMapView(){
+    private void createMapView() {
         photoView = findViewById(R.id.photo_view);
         photoView.setImageResource(R.drawable.naver_map2);
 
         photoView.setMaximumScale(3.0f);
 
-     //   테스트 용 좌표 찍기
-        photoView.setOnMatrixChangeListener(rect -> {
-            if(icon.getVisibility() == View.VISIBLE){
-                icon.setVisibility(View.INVISIBLE);  //다시 아이콘이 안보이도록
-            }
-        });
+        //   테스트 용 좌표 찍기
+//        photoView.setOnMatrixChangeListener(rect -> {
+////            if(icon.getVisibility() == View.VISIBLE){
+////                icon.setVisibility(View.INVISIBLE);  //다시 아이콘이 안보이도록
+////            }
+//            icon.setX(icon.getX()+rect.left);
+//            icon.setY(icon.getY()+rect.top);
+//        });
 
     }
 }
