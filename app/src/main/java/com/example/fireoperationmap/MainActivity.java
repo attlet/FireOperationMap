@@ -14,10 +14,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -35,12 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SlidingUpPanelLayout slidingUpPanelLayout;
     private PhotoView photoView;
+    private ImageView icon;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        icon = (ImageView)findViewById(R.id.icon);
         //액션바 숨기기
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -91,15 +96,9 @@ public class MainActivity extends AppCompatActivity {
             display.getSize(size);
             float middleX = (size.x)*0.5f;
             float middleY = (size.y)*0.3f;
-
-
+            icon = (ImageView)findViewById(R.id.icon);
             photoView.setScale(3.0f);
             photoView.getImageMatrix().getValues(matrix);
-//            matrix[0] =
-//            matrix[4] = 1.2671099f;
-//            matrix[2] = -1080f;
-//            matrix[5] = -388.37793f;
-
 
             Log.d("pre rect ", "left " + photoView.getDisplayRect().left + ", right " + photoView.getDisplayRect().right + " ,top: " + photoView.getDisplayRect().top);
             Log.d("pre matrix", "matrix[2]: "+ matrix[2] + ", matrix[5]" + matrix[5]);
@@ -115,8 +114,11 @@ public class MainActivity extends AppCompatActivity {
             m.setValues(matrix);
             photoView.setImageMatrix(m);
 
+            icon.setVisibility(View.VISIBLE);
+            icon.setX(middleX);
+            icon.setY(middleY);
             Log.d("m values", "m : " + m);
-            photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", " m: "));
+//            photoView.setOnMatrixChangeListener(rect -> Log.d("matirx change", " m: "));
 
         });
     }
@@ -178,7 +180,12 @@ public class MainActivity extends AppCompatActivity {
 
         photoView.setMaximumScale(3.0f);
 
-        //테스트 용 좌표 찍기
-//        photoView.setOnMatrixChangeListener(rect -> Log.d("matrix", "left: " + rect.left + ", top: " + rect.top ));
+     //   테스트 용 좌표 찍기
+        photoView.setOnMatrixChangeListener(rect -> {
+            if(icon.getVisibility() == View.VISIBLE){
+                icon.setVisibility(View.INVISIBLE);  //다시 아이콘이 안보이도록
+            }
+        });
+
     }
 }

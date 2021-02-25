@@ -7,6 +7,7 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         android:id="@+id/sliding_layout"
         android:layout_width="match_parent"
@@ -25,6 +26,13 @@
         <include layout="@layout/sliding_up_panel" />
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/pin"
+        android:visibility="invisible" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,6 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/search" />
 
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,18 +90,19 @@
                     android:id="@+id/rb_stname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="상호명"
-                    android:fontFamily="sans-serif-black"/>
+                    android:fontFamily="sans-serif-black"
+                    android:text="상호명" />
 
                 <RadioButton
                     android:id="@+id/rb_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="주소"
-                    android:fontFamily="sans-serif-black"/>
+                    android:fontFamily="sans-serif-black"
+                    android:text="주소" />
             </RadioGroup>
         </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </FrameLayout>
